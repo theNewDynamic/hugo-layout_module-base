@@ -1,0 +1,10 @@
+{{ $script := .Site.Data.webpack_assets.app }}
+{{ with $script.js }}
+  <script src="{{ print . }}" defer></script>
+{{ end }}
+{{ if eq .Type "search" }}
+  {{ $script := .Site.Data.webpack_assets.algolia }}
+  {{ with $script.js }}
+    <script src="{{ print . }}"></script>
+  {{ end }}
+{{ end }}
