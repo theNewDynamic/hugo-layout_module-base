@@ -10,10 +10,21 @@
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 {{ end }}
 
-{{ $stylesheet := .Site.Data.webpack_assets.app }}
-  {{ with $stylesheet.css }}
-    <link href="{{ print . }}" rel="stylesheet">
+{{ if (fileExists "./assets/output/fonts/fonts.css") -}}
+  {{ with (resources.Get "output/fonts/fonts.css") }}
+    {{ $fonts := . | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $fonts.Permalink | relURL }}" integrity="{{ $fonts.Data.Integrity }}"> 
   {{ end }}
+{{ end }}
+
+{{ if .Site.IsServer }}
+  {{ $style := resources.Get "css/styles.css" | postCSS (dict "config" "./assets/css/config/dev/postcss.config.js") | minify | fingerprint }}    
+  <link rel="stylesheet" href="{{ $style.Permalink }}" data> 
+{{ else }}
+  {{ $style := resources.Get "css/styles.css" | postCSS (dict "config" "./assets/css/config/postcss.config.js")  | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}"> 
+{{ end }}
+
 
 {{ partial "_head/manifest.html" . }}
 

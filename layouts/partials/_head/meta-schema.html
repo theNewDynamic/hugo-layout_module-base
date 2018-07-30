@@ -7,7 +7,5 @@
 <meta itemprop="wordCount" content="{{ .WordCount }}">
 
 <!-- Output all taxonomies as schema.org keywords -->
-{{ with .Params.tags }}
-  <meta itemprop="keywords" content="{{ range $index, $tag := . }}{{ $tag }},{{ end }}" />
-{{ end }}
+<meta itemprop="keywords" content="{{ if .IsPage}}{{ range $index, $tag := .Params.tags }}{{ $tag }},{{ end }}{{ else }}{{ range $plural, $terms := .Site.Taxonomies }}{{ range $term, $val := $terms }}{{ printf "%s," $term }}{{ end }}{{ end }}{{ end }}" />
 {{ end }}
