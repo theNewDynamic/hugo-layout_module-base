@@ -20,14 +20,13 @@
 {{ if .Site.IsServer }}
   {{ $style := resources.Get "css/styles.css" | postCSS (dict "config" "./assets/css/config/dev/postcss.config.js") | minify | fingerprint }}    
     {{ with $style }}
-      <link rel="stylesheet" href="{{ .Permalink }}" data> 
+      <link rel="stylesheet" href="{{ .Permalink | relURL }}" data> 
     {{ end }}
 {{ else }}
   {{ $style := resources.Get "css/styles.css" | postCSS (dict "config" "./assets/css/config/postcss.config.js")  | minify | fingerprint }}  
   {{ with $style }}
-    <link rel="stylesheet" href="{{ .Permalink }}" integrity="{{ .Data.Integrity }}"> 
-  {{ end }}
-  
+    <link rel="stylesheet" href="{{ .Permalink | relURL }}" integrity="{{ .Data.Integrity }}"> 
+  {{ end }}  
 {{ end }}
 
 
