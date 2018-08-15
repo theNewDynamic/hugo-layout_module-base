@@ -13,19 +13,19 @@
 {{ if (fileExists "./assets/output/fonts/fonts.css") -}}
   {{ with (resources.Get "output/fonts/fonts.css") }}
     {{ $fonts := . | resources.Minify | resources.Fingerprint }}
-    <link rel="stylesheet" href="{{ $fonts.Permalink | relURL }}" integrity="{{ $fonts.Data.Integrity }}"> 
+    <link rel="stylesheet" href="{{ $fonts.Permalink | relURL }}" integrity="{{ $fonts.Data.Integrity }}" crossorigin="anonymous"> 
   {{ end }}
 {{ end }}
 
 {{ if .Site.IsServer }}
   {{ $style := resources.Get "css/styles.css" | postCSS (dict "config" "./assets/css/config/dev/postcss.config.js") | minify | fingerprint }}    
     {{ with $style }}
-      <link rel="stylesheet" href="{{ .Permalink | relURL }}" data> 
+      <link rel="stylesheet" href="{{ .Permalink | relURL }}"> 
     {{ end }}
 {{ else }}
   {{ $style := resources.Get "css/styles.css" | postCSS (dict "config" "./assets/css/config/postcss.config.js")  | minify | fingerprint }}  
   {{ with $style }}
-    <link rel="stylesheet" href="{{ .Permalink | relURL }}" integrity="{{ .Data.Integrity }}"> 
+    <link rel="stylesheet" href="{{ .Permalink | relURL }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"> 
   {{ end }}  
 {{ end }}
 
