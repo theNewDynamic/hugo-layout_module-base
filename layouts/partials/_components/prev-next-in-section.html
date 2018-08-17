@@ -1,17 +1,17 @@
 
   {{if .PrevInSection }}
-  <a href="{{ .PrevInSection.Permalink }}" class="color-inherit lg:block text-base sm:text-2xl no-underline hover:text-black font-extrabold">
+  <a href="{{ .PrevInSection.Permalink }}" class="color-inherit lg:block no-underline">
     <span class="align-middle inline-block"><</span> {{ .PrevInSection.Title }}
   </a>
 {{end}}
 
 {{if .NextInSection }}
-  <a href="{{.NextInSection.Permalink }}" class="color-inherit lg:block text-base sm:text-2xl no-underline hover:text-black font-extrabold">
+  <a href="{{.NextInSection.Permalink }}" class="color-inherit lg:block no-underline">
     {{ .NextInSection.Title }} <span class="align-middle inline-block">></span>
   </a>
 {{end}}
 
-{{/*
+
 <script>
   document.body.onkeyup = function(e){
 
@@ -23,4 +23,4 @@
     {{ end }}
   };
 
-</script> */}}
+</script> 
