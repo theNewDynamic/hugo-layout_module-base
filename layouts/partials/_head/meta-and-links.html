@@ -13,20 +13,21 @@
 {{ if (fileExists "./assets/output/fonts/fonts.css") -}}
   {{ with (resources.Get "output/fonts/fonts.css") }}
     {{ $fonts := . | resources.Minify | resources.Fingerprint }}
-    <link rel="stylesheet" href="{{ $fonts.Permalink | relURL }}" integrity="{{ $fonts.Data.Integrity }}" crossorigin="anonymous"> 
+    <link rel="stylesheet" href="{{ $fonts.Permalink }}" integrity="{{ $fonts.Data.Integrity }}" crossorigin="anonymous"> 
+    {{ $.Scratch.Set "fonts" $fonts }}    
   {{ end }}
 {{ end }}
 
-{{ if .Site.IsServer }}
-  {{ $style := resources.Get "css/styles.css" | postCSS (dict "config" "./assets/css/config/dev/postcss.config.js") | minify | fingerprint }}    
-    {{ with $style }}
-      <link rel="stylesheet" href="{{ .Permalink | relURL }}"> 
-    {{ end }}
-{{ else }}
-  {{ $style := resources.Get "css/styles.css" | postCSS (dict "config" "./assets/css/config/postcss.config.js")  | minify | fingerprint }}  
-  {{ with $style }}
-    <link rel="stylesheet" href="{{ .Permalink | relURL }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"> 
-  {{ end }}  
+{{ $stylesheet := resources.Get "css/styles.css" }}
+{{ with $stylesheet }}
+  {{ if $.Site.IsServer }}
+    {{ $stylesheet := . | postCSS (dict "config" "./assets/css/config/dev/postcss.config.js") | minify | fingerprint }}  
+    <link rel="stylesheet" href="{{ $stylesheet.Permalink }}" data> 
+  {{ else }}
+    {{ $stylesheet := . | postCSS (dict "config" "./assets/css/config/postcss.config.js") | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $stylesheet.Permalink }}" integrity="{{ $stylesheet.Data.Integrity }}" crossorigin="anonymous"> 
+    {{ $.Scratch.Set "stylesheet" $stylesheet }}    
+  {{ end }}
 {{ end }}
 
 
