@@ -13,7 +13,7 @@
 {{ if (fileExists "./assets/output/fonts/fonts.css") -}}
   {{ with (resources.Get "output/fonts/fonts.css") }}
     {{ $fonts := . | resources.Minify | resources.Fingerprint }}
-    <link rel="stylesheet" href="{{ $fonts.Permalink }}" integrity="{{ $fonts.Data.Integrity }}" crossorigin="anonymous"> 
+    <link rel="stylesheet" href="{{ $fonts.Permalink | relURL }}" integrity="{{ $fonts.Data.Integrity }}" crossorigin="anonymous"> 
     {{ $.Scratch.Set "fonts" $fonts }}    
   {{ end }}
 {{ end }}
@@ -22,10 +22,10 @@
 {{ with $stylesheet }}
   {{ if $.Site.IsServer }}
     {{ $stylesheet := . | postCSS (dict "config" "./assets/css/config/dev/postcss.config.js") | minify | fingerprint }}  
-    <link rel="stylesheet" href="{{ $stylesheet.Permalink }}" data> 
+    <link rel="stylesheet" href="{{ $stylesheet.Permalink | relURL }}" data> 
   {{ else }}
     {{ $stylesheet := . | postCSS (dict "config" "./assets/css/config/postcss.config.js") | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $stylesheet.Permalink }}" integrity="{{ $stylesheet.Data.Integrity }}" crossorigin="anonymous"> 
+    <link rel="stylesheet" href="{{ $stylesheet.Permalink | relURL }}" integrity="{{ $stylesheet.Data.Integrity }}" crossorigin="anonymous"> 
     {{ $.Scratch.Set "stylesheet" $stylesheet }}    
   {{ end }}
 {{ end }}
