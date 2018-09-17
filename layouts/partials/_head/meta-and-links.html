@@ -18,21 +18,13 @@
   {{ end }}
 {{ end }}
 
-{{ $stylesheet := resources.Get "css/styles.css" }}
+{{ $stylesheet := resources.Get "output/css/app.css" | minify | fingerprint }}
 {{ with $stylesheet }}
-  {{ if $.Site.IsServer }}
-    {{ $stylesheet := . | postCSS (dict "config" "./assets/css/config/dev/postcss.config.js") | minify | fingerprint }}  
-    <link rel="stylesheet" href="{{ $stylesheet.Permalink | relURL }}" data> 
-  {{ else }}
-    {{ $stylesheet := . | postCSS (dict "config" "./assets/css/config/postcss.config.js") | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $stylesheet.Permalink | relURL }}" integrity="{{ $stylesheet.Data.Integrity }}" crossorigin="anonymous"> 
-    {{ $.Scratch.Set "stylesheet" $stylesheet }}    
-  {{ end }}
+  <link rel="stylesheet" href="{{ .Permalink | relURL }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" data-id="me"> 
+  {{ $.Scratch.Set "stylesheet" . }}    
 {{ end }}
 
-
 {{ partial "_head/manifest.html" . }}
-
 
 {{ if .RSSLink }}
   <link href="{{ .RSSLink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
