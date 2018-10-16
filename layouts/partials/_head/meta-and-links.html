@@ -10,35 +10,7 @@
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 {{ end }}
 
-{{ if (fileExists "./assets/output/fonts/fonts.css") -}}
-  {{ with (resources.Get "output/fonts/fonts.css") }}
-    {{ $fonts := . | resources.Minify | resources.Fingerprint }}
-    <link rel="stylesheet" href="{{ $fonts.Permalink | relURL }}" integrity="{{ $fonts.Data.Integrity }}" crossorigin="anonymous"> 
-    {{ $.Scratch.Set "fonts" $fonts }}    
-  {{ end }}
-{{ end }}
-
-{{/* 
-  This is a work in progress. Both methods—Hugo pipes and webpack—have some issues. so both code is in for now.
-  {{ $stylesheet := resources.Get "output/css/app.css" | minify | fingerprint }}
-{{ with $stylesheet }}
-  <link rel="stylesheet" href="{{ .Permalink | relURL }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" data-id="me"> 
-  {{ $.Scratch.Set "stylesheet" . }}    
-{{ end }}  */}}
-
-
-{{ $stylesheet := resources.Get "css/styles.css" }}
-{{ with $stylesheet }}
-  {{ if $.Site.IsServer }}
-    {{ $stylesheet := . | postCSS (dict "config" "./assets/css/config/dev/postcss.config.js") | minify | fingerprint }}  
-    <link rel="stylesheet" href="{{ $stylesheet.Permalink | relURL }}" data> 
-  {{ else }}
-    {{ $stylesheet := . | postCSS (dict "config" "./assets/css/config/postcss.config.js") | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $stylesheet.Permalink | relURL }}" integrity="{{ $stylesheet.Data.Integrity }}" crossorigin="anonymous"> 
-    {{ $.Scratch.Set "stylesheet" $stylesheet }}    
-  {{ end }}
-{{ end }}
-
+{{ partial "_head/stylesheets.html" . }}
 {{ partial "_head/manifest.html" . }}
 
 {{ if .RSSLink }}
