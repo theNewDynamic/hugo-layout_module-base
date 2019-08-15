@@ -136,7 +136,7 @@
             </table>
         {{ else if $typeIsMenuEntry }} <!-- https://github.com/gohugoio/hugo/blob/master/hugolib/menu.go -->
             {{ $MenuEntryVarNames   := (slice "Menu" "Title" "Name" "URL" "Identifier" "Weight" "Pre" "Post" "Parent" "Children") }}
-            {{ $MenuEntryVarSymbols := (slice .Menu  .Title  .Name  .URL  .Identifier  .Weight  .Pre  .Post  .Parent  .Children ) }}
+            {{ $MenuEntryVarSymbols := (slice .Menu  .Title  .Name  .RelPermalink  .Identifier  .Weight  .Pre  .Post  .Parent  .Children ) }}
             <table class="debugprint">
                 <tr><th class="key">MenuEntry Variable</th><th class="value">Value</th></tr>
                 {{ range $idx, $elem := $MenuEntryVarNames }}
