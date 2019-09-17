@@ -10,6 +10,10 @@
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 {{ end }}
 
+{{ with .Params.forestry_instant_preview_id }}
+  {{- safeHTML (printf "<meta property='forestry_instant_preview_id' content='%s'>" .) -}}
+{{ end -}}
+
 {{partial "_head/stylesheets.html" .}}
 {{partial "_head/manifest.html" .}}
 
